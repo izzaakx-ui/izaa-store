@@ -1,0 +1,16 @@
+{
+  "storeName": "Maison Nour",
+  "nav": {
+    "home": "Accueil",
+    "shop": "Boutique",
+    "categories": "Catégories",
+    "cart": "Panier",
+    "admin": "Admin"
+  },
+  "hero": {
+    "title": "Des pièces modernes, faites pour l'Algérie",
+    "subtitle": "Une sélection soignée de vêtements pour tous les jours, livrée dans les 58 wilayas.",
+    "shopNow": "Acheter maintenant"
+  },
+  "languageSwitcher": "العربية"
+}
