@@ -1,48 +1,112 @@
 "use client";
 
+import { useState } from "react";
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
+import ProductCard from "@/components/ProductCard";
+import { categories, products } from "@/data/mockProducts";
 import { useLanguage } from "@/context/LanguageContext";
 
-const navKeys = ["home", "shop", "categories", "cart", "admin"];
+function Stamp() {
+  return (
+    <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-black/80 text-[11px] leading-none">
+      プラ
+    </div>
+  );
+}
 
 export default function Home() {
-  const { t, toggleLanguage } = useLanguage();
+  const { language, t } = useLanguage();
+  const [category, setCategory] = useState("all");
+  const visible =
+    category === "all" ? products : products.filter((product) => product.category === category);
 
   return (
-    <main className="flex flex-1 items-center justify-center bg-zinc-50 px-6 py-16 font-sans dark:bg-black">
-      <section className="w-full max-w-2xl rounded-3xl border border-black/10 bg-white p-8 text-start shadow-sm transition-all duration-300 ease-out sm:p-10 dark:border-white/10 dark:bg-zinc-950">
-        <header className="flex items-center justify-between gap-4">
-          <p className="text-sm font-medium text-zinc-500">{t.storeName}</p>
-          <button
-            type="button"
-            onClick={toggleLanguage}
-            className="rounded-full border border-black/10 px-4 py-2 text-sm font-medium transition-colors duration-300 hover:bg-black/5 dark:border-white/15 dark:hover:bg-white/10"
-          >
-            {t.languageSwitcher}
-          </button>
-        </header>
+    <div className="flex flex-1 flex-col text-[#0D0D0D]">
+      <section className="relative mx-3 mt-3 rounded-[28px] border border-black/80 px-4 pt-5 pb-8 sm:px-6 md:mx-5 md:mt-5 md:px-9 md:pt-7 md:pb-8">
+        <Navbar />
 
-        <nav className="mt-8 flex flex-wrap gap-x-5 gap-y-2 text-sm text-zinc-600 dark:text-zinc-300">
-          {navKeys.map((key) => (
-            <span key={key}>{t.nav[key]}</span>
-          ))}
-        </nav>
+        <div className="relative mt-8 md:mt-4 md:grid md:grid-cols-[minmax(0,1fr)_minmax(240px,340px)_minmax(0,1fr)] md:items-end md:gap-x-6">
+          <div className="flex items-start justify-between gap-4 md:contents">
+            <span className="wordmark text-[clamp(4.25rem,8.4vw,8.75rem)] leading-[0.78] font-extrabold tracking-[-0.06em] md:col-start-1 md:row-start-1 md:justify-self-start md:self-center">
+              {t.brand.aura}
+            </span>
+            <span className="wordmark text-end text-[clamp(4.25rem,8.4vw,8.75rem)] leading-[0.78] font-extrabold tracking-[-0.06em] md:col-start-3 md:row-start-1 md:justify-self-end md:self-center">
+              {t.brand.store}
+            </span>
+          </div>
 
-        <div className="mt-10 border-s-4 border-foreground ps-5 transition-all duration-300">
-          <h1 className="text-4xl font-semibold tracking-tight text-balance">
-            {t.hero.title}
-          </h1>
-          <p className="mt-4 max-w-xl text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            {t.hero.subtitle}
-          </p>
+          <img
+            src="/hero-model.jpg"
+            alt={t.hero.modelAlt}
+            className="pointer-events-none relative z-10 mx-auto -mt-4 w-[min(78%,340px)] mix-blend-darken md:col-start-2 md:row-span-2 md:row-start-1 md:-mb-24 md:h-[740px] md:w-[340px] md:justify-self-center md:object-cover md:object-[68%_center]"
+          />
+
+          <div className="relative z-20 mt-8 max-w-xs md:col-start-1 md:row-start-2 md:mt-16">
+            <Stamp />
+            <h1 className="mt-4 text-[1.7rem] leading-[1.05] font-bold tracking-tight sm:text-4xl">
+              {t.hero.headline}
+            </h1>
+            <p className="technical mt-4 text-[13px] leading-5 text-[#0D0D0D]">
+              {t.hero.lines.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
+            </p>
+          </div>
+
+          <div className="relative z-20 mt-10 w-full max-w-[220px] justify-self-end pb-5 md:col-start-3 md:row-start-2 md:mt-16">
+            <div className="rounded-2xl border border-black/80 bg-[#F4F4F2] p-3">
+              <img
+                src="/puffer-2026.jpg"
+                alt={t.hero.jacketAlt}
+                className="aspect-square w-full object-contain"
+              />
+              <p className="technical mt-2 text-center text-xs tracking-[0.18em]">{t.hero.year}</p>
+            </div>
+            <a
+              href="#products"
+              className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-black/80 bg-[#F4F4F2] px-4 py-1.5 text-xs whitespace-nowrap"
+            >
+              {t.hero.newCollection} ↗
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section id="products" className="scroll-mt-8 px-4 pt-32 md:px-10">
+        <div className="mb-8 flex flex-wrap gap-2">
+          {categories.map((item) => {
+            const active = category === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setCategory(item.id)}
+                className={`cursor-pointer rounded-full border border-black px-4 py-1.5 text-sm transition-colors ${
+                  active ? "bg-[#0D0D0D] text-[#F4F4F2]" : "bg-transparent text-[#0D0D0D]"
+                }`}
+              >
+                {item.label[language]}
+              </button>
+            );
+          })}
         </div>
 
-        <button
-          type="button"
-          className="mt-8 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background transition-colors duration-300"
-        >
-          {t.hero.shopNow}
-        </button>
+        {visible.length === 0 ? (
+          <p className="text-sm text-black/60">{t.shop.empty}</p>
+        ) : (
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">
+            {visible.map((product) => (
+              <ProductCard key={product.id} product={product} />
+            ))}
+          </div>
+        )}
       </section>
-    </main>
+
+      <Footer />
+    </div>
   );
 }

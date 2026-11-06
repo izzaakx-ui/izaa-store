@@ -1,20 +1,28 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Readex_Pro, Space_Mono, Syne } from "next/font/google";
 import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
+  weight: ["500", "600", "700", "800"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const spaceMono = Space_Mono({
+  variable: "--font-space-mono",
   subsets: ["latin"],
+  weight: ["400", "700"],
+});
+
+const readex = Readex_Pro({
+  variable: "--font-readex",
+  subsets: ["arabic", "latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata = {
-  title: "Maison Nour",
-  description: "Boutique de vêtements en Algérie",
+  title: "Aura store",
+  description: "Vêtements sans excès. Livraison dans les 58 wilayas.",
 };
 
 export default function RootLayout({ children }) {
@@ -22,8 +30,9 @@ export default function RootLayout({ children }) {
     <html
       lang="fr"
       dir="ltr"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${syne.variable} ${spaceMono.variable} ${readex.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
         <LanguageProvider>{children}</LanguageProvider>

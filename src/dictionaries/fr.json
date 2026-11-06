@@ -1,16 +1,47 @@
 {
-  "storeName": "Maison Nour",
+  "brand": {
+    "aura": "Aura",
+    "store": "store"
+  },
   "nav": {
-    "home": "Accueil",
-    "shop": "Boutique",
-    "categories": "Catégories",
-    "cart": "Panier",
-    "admin": "Admin"
+    "main": "main",
+    "shop": "shop",
+    "custom": "custom",
+    "about": "about",
+    "contact": "contact"
   },
+  "accountId": "account id",
+  "accountCode": "003.201",
+  "cart": "Panier",
+  "languageSwitcher": "AR",
   "hero": {
-    "title": "Des pièces modernes, faites pour l'Algérie",
-    "subtitle": "Une sélection soignée de vêtements pour tous les jours, livrée dans les 58 wilayas.",
-    "shopNow": "Acheter maintenant"
+    "headline": "Clothes without excess. Only style.",
+    "lines": [
+      "Modern silhouettes, natural",
+      "fabrics, and honest design.",
+      "For those who choose simplicity and quality."
+    ],
+    "year": "2026",
+    "newCollection": "new collection",
+    "modelAlt": "Modèle en veste oversize noire et cargo",
+    "jacketAlt": "Doudoune noire graphique"
   },
-  "languageSwitcher": "العربية"
+  "shop": {
+    "viewPiece": "view piece",
+    "empty": "Aucune pièce dans cette catégorie."
+  },
+  "product": {
+    "back": "shop",
+    "sizes": "sizes",
+    "colors": "colors",
+    "stock": "in stock",
+    "missing": "Cette pièce est introuvable."
+  },
+  "footer": {
+    "cod": "Cash on Delivery (COD) — 58 Wilayas",
+    "note": "Livraison dans les 58 wilayas. Vous payez à la réception.",
+    "custom": "Pièces sur mesure, coupe boxy, séries courtes.",
+    "about": "Aura store conçoit des vêtements sans excès, en Algérie.",
+    "contact": "contact@aurastore.dz"
+  }
 }
