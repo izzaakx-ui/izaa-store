@@ -1,5 +1,8 @@
 import { Readex_Pro, Space_Mono, Syne } from "next/font/google";
+import CartDrawer from "@/components/CartDrawer";
+import { CartProvider } from "@/context/CartContext";
 import { LanguageProvider } from "@/context/LanguageContext";
+import { StoreDataProvider } from "@/context/StoreDataContext";
 import "./globals.css";
 
 const syne = Syne({
@@ -21,8 +24,8 @@ const readex = Readex_Pro({
 });
 
 export const metadata = {
-  title: "Aura store",
-  description: "Vêtements sans excès. Livraison dans les 58 wilayas.",
+  title: "Izzaa store",
+  description: "Izzaa store. Livraison dans les 58 wilayas.",
 };
 
 export default function RootLayout({ children }) {
@@ -35,7 +38,14 @@ export default function RootLayout({ children }) {
       className={`${syne.variable} ${spaceMono.variable} ${readex.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <LanguageProvider>{children}</LanguageProvider>
+        <LanguageProvider>
+          <StoreDataProvider>
+            <CartProvider>
+              {children}
+              <CartDrawer />
+            </CartProvider>
+          </StoreDataProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

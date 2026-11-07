@@ -4,22 +4,25 @@ import { useState } from "react";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import ProductCard from "@/components/ProductCard";
-import { categories, products } from "@/data/mockProducts";
 import { useLanguage } from "@/context/LanguageContext";
+import { useStoreData } from "@/context/StoreDataContext";
 
 function Stamp() {
   return (
     <div className="flex h-11 w-11 items-center justify-center rounded-lg border border-black/80 text-[11px] leading-none">
-      プラ
+      ブラ
     </div>
   );
 }
 
 export default function Home() {
   const { language, t } = useLanguage();
+  const { products, categories, ready, featuredProductId } = useStoreData();
   const [category, setCategory] = useState("all");
+  const catalog = products.filter((product) => product.available !== false);
+  const featured = products.find((product) => product.id === featuredProductId);
   const visible =
-    category === "all" ? products : products.filter((product) => product.category === category);
+    category === "all" ? catalog : catalog.filter((product) => product.category === category);
 
   return (
     <div className="flex flex-1 flex-col text-[#0D0D0D]">
@@ -28,10 +31,10 @@ export default function Home() {
 
         <div className="relative mt-8 md:mt-4 md:grid md:grid-cols-[minmax(0,1fr)_minmax(240px,340px)_minmax(0,1fr)] md:items-end md:gap-x-6">
           <div className="flex items-start justify-between gap-4 md:contents">
-            <span className="wordmark text-[clamp(4.25rem,8.4vw,8.75rem)] leading-[0.78] font-extrabold tracking-[-0.06em] md:col-start-1 md:row-start-1 md:justify-self-start md:self-center">
-              {t.brand.aura}
+            <span className="wordmark translate-y-5 text-[clamp(4.25rem,8.4vw,8.75rem)] leading-[0.78] font-extrabold tracking-[-0.06em] md:col-start-1 md:row-start-1 md:translate-y-7 md:justify-self-start md:self-center">
+              {t.brand.izaa}
             </span>
-            <span className="wordmark text-end text-[clamp(4.25rem,8.4vw,8.75rem)] leading-[0.78] font-extrabold tracking-[-0.06em] md:col-start-3 md:row-start-1 md:justify-self-end md:self-center">
+            <span className="wordmark translate-y-5 text-end text-[clamp(4.25rem,8.4vw,8.75rem)] leading-[0.78] font-extrabold tracking-[-0.06em] md:col-start-3 md:row-start-1 md:translate-y-7 md:justify-self-end md:self-center">
               {t.brand.store}
             </span>
           </div>
@@ -59,14 +62,14 @@ export default function Home() {
           <div className="relative z-20 mt-10 w-full max-w-[220px] justify-self-end pb-5 md:col-start-3 md:row-start-2 md:mt-16">
             <div className="rounded-2xl border border-black/80 bg-[#F4F4F2] p-3">
               <img
-                src="/puffer-2026.jpg"
-                alt={t.hero.jacketAlt}
+                src={featured?.image || "/puffer-2026.jpg"}
+                alt={featured?.name?.[language] || t.hero.jacketAlt}
                 className="aspect-square w-full object-contain"
               />
               <p className="technical mt-2 text-center text-xs tracking-[0.18em]">{t.hero.year}</p>
             </div>
             <a
-              href="#products"
+              href={featured ? `/product/${featured.id}` : "#products"}
               className="absolute -bottom-1 left-1/2 -translate-x-1/2 rounded-full border border-black/80 bg-[#F4F4F2] px-4 py-1.5 text-xs whitespace-nowrap"
             >
               {t.hero.newCollection} ↗
@@ -95,7 +98,7 @@ export default function Home() {
           })}
         </div>
 
-        {visible.length === 0 ? (
+        {!ready && visible.length === 0 ? null : visible.length === 0 ? (
           <p className="text-sm text-black/60">{t.shop.empty}</p>
         ) : (
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">

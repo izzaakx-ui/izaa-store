@@ -2,7 +2,8 @@ export const categories = [
   { id: "all", label: { fr: "All", ar: "الكل" } },
   { id: "jackets", label: { fr: "Jackets", ar: "جاكيتات" } },
   { id: "hoodies", label: { fr: "Hoodies", ar: "هوديز" } },
-  { id: "cargo", label: { fr: "Cargo Pants", ar: "بناطيل كارجو" } },
+  { id: "pants", label: { fr: "Cargo Pants", ar: "بناطيل كارجو" } },
+  { id: "tshirts", label: { fr: "Tees", ar: "تيشيرتات" } },
 ];
 
 export const products = [
@@ -15,6 +16,7 @@ export const products = [
       ar: "هودي واسع وثقيل، كتف ساقط وسواد عميق.",
     },
     price: 14500,
+    code: "AU.014",
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [
       { fr: "Noir", ar: "أسود" },
@@ -32,6 +34,7 @@ export const products = [
       ar: "طبقة مزدوجة داكنة، قصة مربعة وقبعة عميقة.",
     },
     price: 12800,
+    code: "AU.012",
     sizes: ["M", "L", "XL", "XXL"],
     colors: [{ fr: "Noir lavé", ar: "أسود مغسول" }],
     stock: 14,
@@ -46,6 +49,8 @@ export const products = [
       ar: "جاكت منتفخ بطبعة وردية، حجم قصير ونايلون لامع.",
     },
     price: 24600,
+    compareAt: 28900,
+    code: "AU.024",
     sizes: ["S", "M", "L", "XL"],
     colors: [{ fr: "Noir / rose", ar: "أسود / وردي" }],
     stock: 5,
@@ -60,6 +65,7 @@ export const products = [
       ar: "جاكيت أسود بقصة مربعة وإغلاق عالٍ.",
     },
     price: 21900,
+    code: "AU.021",
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [{ fr: "Noir", ar: "أسود" }],
     stock: 6,
@@ -67,13 +73,14 @@ export const products = [
   },
   {
     id: "column-cargo",
-    category: "cargo",
+    category: "pants",
     name: { fr: "Cargo Column", ar: "بنطال كارجو كولوم" },
     description: {
       fr: "Pantalon cargo ample, poches basses et pli technique.",
       ar: "بنطال كارجو واسع، جيوب منخفضة وطية تقنية.",
     },
     price: 16800,
+    code: "AU.016",
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [{ fr: "Noir", ar: "أسود" }],
     stock: 11,
@@ -81,13 +88,15 @@ export const products = [
   },
   {
     id: "mass-tee",
-    category: "tees",
+    category: "tshirts",
     name: { fr: "T-shirt boxy Mass", ar: "تيشيرت ماس البوكسي" },
     description: {
       fr: "T-shirt lourd à coupe boxy, coton dense et col réduit.",
       ar: "تيشيرت ثقيل بقصة مربعة، قطن كثيف وياقة ضيقة.",
     },
     price: 7900,
+    compareAt: 9800,
+    code: "AU.007",
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: [
       { fr: "Noir", ar: "أسود" },

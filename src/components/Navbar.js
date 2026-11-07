@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ShoppingBag } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 import { useLanguage } from "@/context/LanguageContext";
 
 const links = [
@@ -37,13 +38,14 @@ function StarCluster() {
 export default function Navbar() {
   const pathname = usePathname();
   const { t, toggleLanguage } = useLanguage();
+  const { cartCount, setIsCartOpen } = useCart();
   const onProduct = pathname.startsWith("/product");
 
   return (
     <header className="relative flex flex-wrap items-center justify-between gap-x-4 gap-y-4">
       <Link href="/" className="flex items-center gap-2 text-[#0D0D0D]">
         <span className="wordmark flex flex-col text-[15px] leading-[0.95] font-bold tracking-tight">
-          <span>{t.brand.aura}</span>
+          <span>{t.brand.izaa}</span>
           <span>{t.brand.store}</span>
         </span>
         <StarCluster />
@@ -79,10 +81,15 @@ export default function Navbar() {
         >
           {t.languageSwitcher}
         </button>
-        <button type="button" className="relative cursor-pointer text-[#0D0D0D]" aria-label={t.cart}>
+        <button
+          type="button"
+          onClick={() => setIsCartOpen(true)}
+          className="relative cursor-pointer text-[#0D0D0D]"
+          aria-label={t.cart}
+        >
           <ShoppingBag size={18} strokeWidth={1.6} />
           <span className="absolute -top-2 -end-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-[#0D0D0D] px-1 text-[9px] leading-none text-[#F4F4F2]">
-            0
+            {cartCount}
           </span>
         </button>
       </div>

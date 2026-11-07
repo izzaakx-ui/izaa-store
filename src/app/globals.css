@@ -38,6 +38,10 @@ html[lang="ar"] .technical {
   font-family: var(--font-readex), sans-serif;
 }
 
+nextjs-portal {
+  display: none !important;
+}
+
 .wordmark {
   font-family: var(--font-syne), sans-serif;
 }
