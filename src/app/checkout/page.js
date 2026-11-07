@@ -143,7 +143,7 @@ export default function CheckoutPage() {
           <Confirmation order={order} language={language} t={t} />
         ) : (
           <>
-            <h1 className="mt-8 text-4xl font-bold tracking-tight md:text-6xl">{t.checkout.title}</h1>
+            <h1 className="mt-8 text-[clamp(1.85rem,8vw,2.25rem)] font-bold tracking-tight break-words md:text-6xl">{t.checkout.title}</h1>
             {summaryItems.length === 0 ? (
               <div className="mt-8">
                 <p className="technical text-sm text-black/60">{t.checkout.empty}</p>
@@ -320,7 +320,7 @@ function Confirmation({ order, language, t }) {
     <div className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(280px,0.9fr)]">
       <div>
         <p className="technical text-[11px] tracking-[0.16em] text-black/50">{t.checkout.reference}</p>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight md:text-6xl">{order.reference}</h1>
+        <h1 className="mt-3 text-[clamp(1.85rem,8vw,2.25rem)] font-bold tracking-tight break-all md:text-6xl">{order.reference}</h1>
         <p className="mt-4 text-2xl font-semibold">{t.checkout.confirmedTitle}</p>
         <p className="mt-3 max-w-md text-sm leading-6 text-black/70">{t.checkout.confirmedNote}</p>
         <p className="mt-6 text-sm">

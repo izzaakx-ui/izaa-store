@@ -105,7 +105,7 @@ export default function ProductView({ params }) {
             <p className="technical text-[11px] tracking-[0.16em] text-black/50">
               {t.product.code} {product.code}
             </p>
-            <h1 className="mt-3 text-4xl leading-none font-bold tracking-tight md:text-6xl">
+            <h1 className="mt-3 text-[clamp(1.75rem,8vw,2.25rem)] leading-none font-bold tracking-tight break-words md:text-6xl">
               {product.name[language]}
             </h1>
             <p className="mt-5 max-w-md text-base leading-7 text-black/70">

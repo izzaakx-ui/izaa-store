@@ -17,10 +17,14 @@ html {
   scroll-behavior: smooth;
   background: #f4f4f2;
   color: #0d0d0d;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
   min-height: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: #f4f4f2;
   color: #0d0d0d;
   font-family: var(--font-syne), sans-serif;
@@ -44,6 +48,12 @@ nextjs-portal {
 
 .wordmark {
   font-family: var(--font-syne), sans-serif;
+  max-width: 100%;
+}
+
+img,
+video {
+  max-width: 100%;
 }
 
 body::before {

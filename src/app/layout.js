@@ -37,7 +37,7 @@ export default function RootLayout({ children }) {
       suppressHydrationWarning
       className={`${syne.variable} ${spaceMono.variable} ${readex.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-full max-w-full flex-col overflow-x-hidden">
         <LanguageProvider>
           <StoreDataProvider>
             <CartProvider>

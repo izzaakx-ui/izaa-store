@@ -119,7 +119,7 @@ export default function AdminPage() {
       <section className="mx-3 mt-3 rounded-[28px] border border-black/80 px-4 py-5 sm:px-6 md:mx-5 md:mt-5 md:px-9 md:py-7">
         <Navbar />
         <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
-          <h1 className="text-4xl font-bold tracking-tight md:text-6xl">{t.admin.loginTitle}</h1>
+          <h1 className="text-[clamp(1.85rem,8vw,2.25rem)] font-bold tracking-tight break-words md:text-6xl">{t.admin.loginTitle}</h1>
           <button
             type="button"
             onClick={() => {
@@ -201,7 +201,7 @@ function LoginScreen({ t, onSuccess }) {
       <section className="mx-3 mt-3 rounded-[28px] border border-black/80 px-4 py-5 sm:px-6 md:mx-5 md:mt-5 md:px-9 md:py-7">
         <Navbar />
         <form onSubmit={submit} className="mx-auto mt-12 w-full max-w-md">
-          <h1 className="text-4xl font-bold tracking-tight md:text-6xl">{t.admin.loginTitle}</h1>
+          <h1 className="text-[clamp(1.85rem,8vw,2.25rem)] font-bold tracking-tight break-words md:text-6xl">{t.admin.loginTitle}</h1>
           <p className="technical mt-4 text-xs text-black/60">{t.admin.hint}</p>
           <label className="mt-8 block">
             <span className="technical text-[11px] tracking-wide text-black/50">{t.admin.email}</span>
@@ -320,14 +320,15 @@ function ProductsPanel({ t, language, store, onEdit }) {
       ) : (
         <div className="grid gap-3">
           {store.products.map((product) => (
-            <article key={product.id} className="grid items-center gap-3 rounded-2xl border border-black/80 p-3 sm:grid-cols-[72px_minmax(0,1.4fr)_auto_auto_auto_auto]">
+            <article key={product.id} className="grid grid-cols-[72px_minmax(0,1fr)] items-center gap-3 rounded-2xl border border-black/80 p-3 lg:grid-cols-[72px_minmax(0,1fr)_auto]">
               <img src={product.image} alt="" className="h-16 w-16 rounded-xl border border-black/30 object-cover" />
-              <div>
-                <p className="font-semibold">{product.name?.[language]}</p>
+              <div className="min-w-0">
+                <p className="font-semibold break-words">{product.name?.[language]}</p>
                 <p className="technical mt-1 text-[11px] text-black/50">
                   {product.category} · {formatPrice(product.price, language)} · {t.admin.stock} {product.stock}
                 </p>
               </div>
+              <div className="col-span-2 flex flex-wrap items-center gap-2 lg:col-span-1 lg:justify-end">
               <button
                 type="button"
                 onClick={() => {
@@ -378,6 +379,7 @@ function ProductsPanel({ t, language, store, onEdit }) {
               >
                 {t.admin.delete}
               </button>
+              </div>
             </article>
           ))}
         </div>

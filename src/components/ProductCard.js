@@ -8,7 +8,7 @@ export default function ProductCard({ product }) {
   const { language, t } = useLanguage();
 
   return (
-    <article className="flex h-full flex-col rounded-2xl border border-black/80 bg-[#F4F4F2] p-4">
+    <article className="flex h-full min-w-0 flex-col rounded-2xl border border-black/80 bg-[#F4F4F2] p-4">
       <div className="aspect-[4/5] overflow-hidden rounded-xl bg-black/[0.04]">
         <img
           src={product.image}
@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
           className="h-full w-full object-cover"
         />
       </div>
-      <h3 className="mt-4 text-xl leading-tight font-semibold">{product.name[language]}</h3>
+      <h3 className="mt-4 text-lg leading-tight font-semibold break-words sm:text-xl">{product.name[language]}</h3>
       <p className="mt-2 line-clamp-2 text-sm leading-6 text-black/60">
         {product.description[language]}
       </p>

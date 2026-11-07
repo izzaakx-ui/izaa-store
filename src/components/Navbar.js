@@ -42,8 +42,8 @@ export default function Navbar() {
   const onProduct = pathname.startsWith("/product");
 
   return (
-    <header className="relative flex flex-wrap items-center justify-between gap-x-4 gap-y-4">
-      <Link href="/" className="flex items-center gap-2 text-[#0D0D0D]">
+    <header className="relative flex w-full min-w-0 flex-wrap items-center justify-between gap-x-3 gap-y-3">
+      <Link href="/" className="flex min-w-0 items-center gap-2 text-[#0D0D0D]">
         <span className="wordmark flex flex-col text-[15px] leading-[0.95] font-bold tracking-tight">
           <span>{t.brand.izaa}</span>
           <span>{t.brand.store}</span>
@@ -51,7 +51,7 @@ export default function Navbar() {
         <StarCluster />
       </Link>
 
-      <nav className="order-3 flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm md:order-none md:absolute md:top-1/2 md:left-1/2 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
+      <nav className="order-3 flex w-full min-w-0 flex-wrap items-center justify-center gap-x-3 gap-y-2 text-sm sm:gap-x-6 md:order-none md:absolute md:top-1/2 md:left-1/2 md:w-auto md:-translate-x-1/2 md:-translate-y-1/2">
         {links.map((link) => {
           const active = link.key === "shop" ? onProduct : link.key === "main" && !onProduct;
           return (
@@ -70,7 +70,7 @@ export default function Navbar() {
         })}
       </nav>
 
-      <div className="flex items-center gap-3 sm:gap-4">
+      <div className="flex shrink-0 items-center gap-2.5 sm:gap-4">
         <p className="technical hidden text-[11px] tracking-wide text-[#0D0D0D] sm:block">
           {t.accountId} - {t.accountCode}
         </p>
