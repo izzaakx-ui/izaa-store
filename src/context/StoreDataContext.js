@@ -108,25 +108,31 @@ function parseWilaya(value) {
 }
 
 function toOrderRow(order) {
+  const delivery = order.customer.deliveryType === "desk" ? "desk" : "home";
+  const wilaya = order.customer.wilaya || {};
   return {
-    id: order.reference,
+    id: String(order.reference),
     customer_name: order.customer.fullName,
     phone: order.customer.phone,
-    wilaya_code: order.customer.wilayaCode,
-    wilaya_name: JSON.stringify(order.customer.wilaya || {}),
+    wilaya_code: String(order.customer.wilayaCode || ""),
+    wilaya_name: JSON.stringify({
+      fr: wilaya.fr || "",
+      ar: wilaya.ar || "",
+    }),
     commune: order.customer.commune,
     address: order.customer.address,
-    delivery_type: order.customer.deliveryType,
+    delivery_type: delivery,
     items: order.items || [],
-    subtotal: order.subtotal || 0,
-    shipping_fee: order.shipping || 0,
-    total: order.total || 0,
-    status: (order.status || "pending").toLowerCase(),
+    subtotal: Number(order.subtotal) || 0,
+    shipping_fee: Number(order.shipping) || 0,
+    total: Number(order.total) || 0,
+    status: "pending",
+    created_at: order.createdAt || new Date().toISOString(),
   };
 }
 
 function fromOrderRow(row) {
-  const wilaya = parseWilaya(row.wilaya_name);
+  const wilaya = parseWilaya(row.wilaya_name ?? row.wilaya);
   return {
     id: row.id,
     reference: row.id,
@@ -143,7 +149,7 @@ function fromOrderRow(row) {
     },
     items: Array.isArray(row.items) ? row.items : [],
     subtotal: Number(row.subtotal) || 0,
-    shipping: Number(row.shipping_fee) || 0,
+    shipping: Number(row.shipping_fee ?? row.shipping) || 0,
     total: Number(row.total) || 0,
   };
 }
@@ -422,11 +428,40 @@ export function StoreDataProvider({ children }) {
   }, [cacheCatalog]);
 
   const addOrder = useCallback(async (order) => {
-    const { data, error } = await supabase.from("orders").insert(toOrderRow(order)).select("*").single();
-    if (error) throw error;
-    const next = fromOrderRow(data);
-    setOrders((current) => [next, ...current.filter((item) => item.reference !== next.reference)]);
-    return next;
+    const row = toOrderRow(order);
+    let lastError = null;
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const { error } = await supabase.from("orders").insert(row);
+      if (!error) {
+        lastError = null;
+        break;
+      }
+      lastError = error;
+      console.error(error);
+      if (error.code !== "57014") break;
+    }
+    if (lastError) throw new Error(lastError.message || "Could not save the order.");
+
+    const saved = fromOrderRow(row);
+    setOrders((current) => [saved, ...current.filter((item) => item.reference !== saved.reference)]);
+
+    supabase
+      .from("orders")
+      .select("*")
+      .eq("id", row.id)
+      .maybeSingle()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error(error);
+          return;
+        }
+        if (!data) return;
+        const next = fromOrderRow(data);
+        setOrders((current) => [next, ...current.filter((item) => item.reference !== next.reference)]);
+      })
+      .catch((error) => console.error(error));
+
+    return saved;
   }, []);
 
   const updateOrderStatus = useCallback(async (orderId, status) => {

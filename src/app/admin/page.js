@@ -7,8 +7,8 @@ import { useLanguage } from "@/context/LanguageContext";
 import { useStoreData } from "@/context/StoreDataContext";
 import { formatPrice } from "@/data/mockProducts";
 
-const ADMIN_EMAIL = "admin@izzaastore.dz";
-const ADMIN_PASSWORD = "admin123";
+const ADMIN_LOGINS = new Set(["ishakchbabbzf2006", "ishakchbabbzf2006@gmail.com"]);
+const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD || "ishakchbabbzf2006";
 const SESSION_KEY = "aura_admin";
 const SIZES = ["S", "M", "L", "XL", "XXL"];
 const STATUSES = ["pending", "confirmed", "shipped", "delivered", "cancelled"];
@@ -189,7 +189,7 @@ function LoginScreen({ t, onSuccess }) {
 
   function submit(event) {
     event.preventDefault();
-    if (email.trim().toLowerCase() === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
+    if (ADMIN_LOGINS.has(email.trim().toLowerCase()) && password === ADMIN_PASSWORD) {
       onSuccess();
       return;
     }
@@ -200,16 +200,31 @@ function LoginScreen({ t, onSuccess }) {
     <div className="flex flex-1 flex-col text-[#0D0D0D]">
       <section className="mx-3 mt-3 rounded-[28px] border border-black/80 px-4 py-5 sm:px-6 md:mx-5 md:mt-5 md:px-9 md:py-7">
         <Navbar />
-        <form onSubmit={submit} className="mx-auto mt-12 w-full max-w-md">
+        <form onSubmit={submit} autoComplete="off" className="mx-auto mt-12 w-full max-w-md">
           <h1 className="text-[clamp(1.85rem,8vw,2.25rem)] font-bold tracking-tight break-words md:text-6xl">{t.admin.loginTitle}</h1>
-          <p className="technical mt-4 text-xs text-black/60">{t.admin.hint}</p>
           <label className="mt-8 block">
             <span className="technical text-[11px] tracking-wide text-black/50">{t.admin.email}</span>
-            <input className={`${inputClass} mt-2`} value={email} onChange={(event) => setEmail(event.target.value)} type="email" required />
+            <input
+              className={`${inputClass} mt-2`}
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              type="text"
+              name="admin-email"
+              autoComplete="off"
+              required
+            />
           </label>
           <label className="mt-4 block">
             <span className="technical text-[11px] tracking-wide text-black/50">{t.admin.password}</span>
-            <input className={`${inputClass} mt-2`} value={password} onChange={(event) => setPassword(event.target.value)} type="password" required />
+            <input
+              className={`${inputClass} mt-2`}
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              name="admin-password"
+              autoComplete="new-password"
+              required
+            />
           </label>
           {error ? <p className="mt-3 text-sm">{error}</p> : null}
           <button type="submit" className="mt-6 cursor-pointer rounded-full bg-[#0D0D0D] px-5 py-3 text-sm text-[#F4F4F2]">

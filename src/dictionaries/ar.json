@@ -87,7 +87,6 @@
     "password": "كلمة السر",
     "signIn": "دخول",
     "logout": "خروج",
-    "hint": "دخول تجريبي: admin@izzaastore.dz / admin123",
     "invalid": "بيانات الدخول غير صحيحة.",
     "revenue": "إجمالي الإيرادات",
     "orders": "إجمالي الطلبات",

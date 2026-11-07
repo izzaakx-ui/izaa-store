@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
@@ -36,9 +36,9 @@ function nextReference(orders) {
   return reference;
 }
 
-function Field({ label, error, children }) {
+function Field({ label, error, name, children }) {
   return (
-    <label className="block">
+    <label className="block" data-field={name}>
       <span className="technical text-[11px] tracking-wide text-black/50">{label}</span>
       <div className="mt-2">{children}</div>
       {error ? <p className="mt-1 text-xs text-black/70">{error}</p> : null}
@@ -51,12 +51,16 @@ const inputClass =
 
 export default function CheckoutPage() {
   const { language, t } = useLanguage();
-  const { items, cartTotal, clearCart } = useCart();
-  const { addOrder, orders, ready } = useStoreData();
+  const { items, cartTotal, clearCart, setIsCartOpen } = useCart();
+  const { addOrder, orders } = useStoreData();
   const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState({});
   const [order, setOrder] = useState(null);
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    setIsCartOpen(false);
+  }, [setIsCartOpen]);
 
   const wilaya = getWilaya(form.wilaya);
   const shipping = shippingPrice(wilaya, form.deliveryType);
@@ -96,10 +100,24 @@ export default function CheckoutPage() {
 
   async function handleSubmit(event) {
     event.preventDefault();
-    if (!summaryItems.length || saving || !ready) return;
+    if (saving) return;
+    if (!summaryItems.length) {
+      alert(t.checkout.empty);
+      return;
+    }
     const { next, phone } = validate();
     setErrors(next);
-    if (Object.keys(next).length) return;
+    if (Object.keys(next).length) {
+      const field = Object.keys(next)[0];
+      alert(next[field]);
+      requestAnimationFrame(() => {
+        document.querySelector(`[data-field="${field}"]`)?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
+      return;
+    }
 
     const confirmed = {
       reference: nextReference(orders),
@@ -123,12 +141,23 @@ export default function CheckoutPage() {
 
     setSaving(true);
     try {
-      await addOrder(confirmed);
-      setOrder(confirmed);
+      const saved = await addOrder(confirmed);
       clearCart();
+      setOrder({ ...confirmed, reference: saved?.reference || confirmed.reference });
     } catch (error) {
       console.error(error);
-      setErrors((current) => ({ ...current, save: t.checkout.errors.save }));
+      const detail = error?.message || error?.details || t.checkout.errors.save;
+      alert(detail);
+      setErrors((current) => ({
+        ...current,
+        save: detail,
+      }));
+      requestAnimationFrame(() => {
+        document.getElementById("checkout-save-error")?.scrollIntoView({
+          behavior: "smooth",
+          block: "center",
+        });
+      });
     } finally {
       setSaving(false);
     }
@@ -152,9 +181,14 @@ export default function CheckoutPage() {
                 </Link>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
-                <div className="grid gap-5">
-                  <Field label={t.checkout.fullName} error={errors.fullName}>
+              <form onSubmit={handleSubmit} className="mt-8 grid min-w-0 items-start gap-8 lg:grid-cols-[minmax(0,1.1fr)_minmax(280px,0.9fr)]">
+                {errors.save ? (
+                  <p id="checkout-save-error" className="rounded-xl border border-black px-3 py-2 text-sm lg:col-span-2">
+                    {errors.save}
+                  </p>
+                ) : null}
+                <div className="grid min-w-0 gap-5">
+                  <Field label={t.checkout.fullName} error={errors.fullName} name="fullName">
                     <input
                       className={inputClass}
                       value={form.fullName}
@@ -163,7 +197,7 @@ export default function CheckoutPage() {
                       required
                     />
                   </Field>
-                  <Field label={t.checkout.phone} error={errors.phone}>
+                  <Field label={t.checkout.phone} error={errors.phone} name="phone">
                     <input
                       className={inputClass}
                       value={form.phone}
@@ -174,7 +208,7 @@ export default function CheckoutPage() {
                       required
                     />
                   </Field>
-                  <Field label={t.checkout.wilaya} error={errors.wilaya}>
+                  <Field label={t.checkout.wilaya} error={errors.wilaya} name="wilaya">
                     <select
                       className={inputClass}
                       value={form.wilaya}
@@ -189,7 +223,7 @@ export default function CheckoutPage() {
                       ))}
                     </select>
                   </Field>
-                  <Field label={t.checkout.commune} error={errors.commune}>
+                  <Field label={t.checkout.commune} error={errors.commune} name="commune">
                     <input
                       className={inputClass}
                       value={form.commune}
@@ -197,7 +231,7 @@ export default function CheckoutPage() {
                       required
                     />
                   </Field>
-                  <Field label={t.checkout.address} error={errors.address}>
+                  <Field label={t.checkout.address} error={errors.address} name="address">
                     <textarea
                       className={`${inputClass} min-h-24 resize-y`}
                       value={form.address}
@@ -252,10 +286,14 @@ export default function CheckoutPage() {
                   total={wilaya ? total : null}
                   action={
                     <>
-                      {errors.save ? <p className="mt-4 text-sm">{errors.save}</p> : null}
+                      {errors.save ? (
+                        <p className="mt-4 rounded-xl border border-black px-3 py-2 text-sm lg:hidden">
+                          {errors.save}
+                        </p>
+                      ) : null}
                       <button
                         type="submit"
-                        disabled={saving || !ready}
+                        disabled={saving}
                         className="mt-5 w-full cursor-pointer rounded-full bg-[#0D0D0D] px-5 py-3 text-sm text-[#F4F4F2] disabled:cursor-wait disabled:opacity-60"
                       >
                         {t.checkout.confirm} ↗

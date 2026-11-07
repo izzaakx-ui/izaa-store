@@ -87,7 +87,6 @@
     "password": "Password",
     "signIn": "Sign in",
     "logout": "Logout",
-    "hint": "Demo access: admin@izzaastore.dz / admin123",
     "invalid": "Those credentials are not valid.",
     "revenue": "Total revenue",
     "orders": "Total orders",
